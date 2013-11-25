@@ -104,7 +104,7 @@ class pEnrollment extends page{
 		$host = "sql2.njit.edu";
 		$dbname = "jao4";
 		try{
-		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","TopSecret");
+		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","AoL8m6GR");
 		$DBH->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		
 		$STH = $DBH->query("select colleges.name, students2.enrollment from colleges inner join students2 on colleges.id = students2.id
@@ -148,7 +148,7 @@ class pLiabilities extends page{
 		$host = "sql2.njit.edu";
 		$dbname = "jao4";
 		try{
-		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","TopSecret");
+		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","AoL8m6GR");
 		$DBH->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		
 		$STH = $DBH->query("select colleges.name, finances.liability, finances.year from colleges inner join finances on colleges.id = finances.id
@@ -191,7 +191,7 @@ class pAssets extends page{
 		$host = "sql2.njit.edu";
 		$dbname = "jao4";
 		try{
-		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","TopSecret");
+		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","AoL8m6GR");
 		$DBH->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		
 		$STH = $DBH->query("select colleges.name, finances.assets, finances.year from colleges
@@ -234,7 +234,7 @@ class pRevenue extends page{
 		$host = "sql2.njit.edu";
 		$dbname = "jao4";
 		try{
-		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","TopSecret");
+		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","AoL8m6GR");
 		$DBH->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		
 		$STH = $DBH->query("select colleges.name, finances.revenue from colleges 
@@ -277,7 +277,7 @@ class pRPS extends page{
 		$host = "sql2.njit.edu";
 		$dbname = "jao4";
 		try{
-		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","TopSecret");
+		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","AoL8m6GR");
 		$DBH->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		
 		$STH = $DBH->query("select colleges.name, finances.revenue, students2.enrollment, (finances.revenue / students2.enrollment) as rps
@@ -324,7 +324,7 @@ class pAPS extends page{
 		$host = "sql2.njit.edu";
 		$dbname = "jao4";
 		try{
-		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","TopSecret");
+		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","AoL8m6GR");
 		$DBH->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		
 		$STH = $DBH->query("select colleges.name, finances.assets, students2.enrollment, (finances.assets / students2.enrollment) as aps
@@ -372,7 +372,7 @@ class pLPS extends page{
 		$dbname = "jao4";
 		$table = "colleges";
 		try{
-		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","TopSecret");
+		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","AoL8m6GR");
 		$DBH->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		
 		$STH = $DBH->query("select colleges.name, finances.liability, students2.enrollment, (finances.liability / students2.enrollment) as lps
@@ -447,7 +447,7 @@ class p5 extends page{
 		$host = "sql2.njit.edu";
 		$dbname = "jao4";
 		try{
-		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","TopSecret");
+		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","AoL8m6GR");
 		$DBH->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		
 		$topColleges = null; //The top colleges array.
@@ -521,9 +521,7 @@ class p5 extends page{
 		}
 		
 		//Finally, liabilities per student
-		/*
-		 * ONE COLLEGE HAS BOTH THE HIGHEST LIABILITY AND THE HIGHEST LIABILITY PER STUDENT. COMMENT THIS TO PREVENT THAT COLLEGE
-		 * FROM SHOWING UP TWICE.
+
 		$STH = $DBH->query("select colleges.id
 		from colleges inner join finances on colleges.id = finances.id inner join students2 on colleges.id = students2.id
 		where liability > 0 and (finances.year = 2011 and students2.year = 2011)
@@ -532,12 +530,12 @@ class p5 extends page{
 		while($rows = $STH->fetch()){
 			$topColleges[] = $rows['id'];
 		}
-		*/
+		
 		
 		//I should create giant queries for each of the colleges now.
 		//A for loop sounds like it can do the job.
 		
-		for($i = 0; $i < 4; $i++){	
+		for($i = 0; $i < 5; $i++){	
 			
 			$c = $topColleges[$i];
 
@@ -593,7 +591,7 @@ class p5 extends page{
 			</tr>
 		';
 		
-		for($i = 0; $i < 4; $i++){
+		for($i = 0; $i < 5; $i++){
 			$this->content .= "<tr>";
 			$this->content .= "<td>" . $data[$i]['name'] . "</td>";
 			$this->content .= "<td>" . $data[$i]['enrollment'] . "</td>";
@@ -632,7 +630,7 @@ class pState extends page{
 		$dbname = "jao4";
 		$state = $_POST['state'];
 		try{
-		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","TopSecret");
+		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","AoL8m6GR");
 		$DBH->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		
 		$STH = $DBH->query("select colleges.name, colleges.state from colleges where colleges.state = '$state'");
@@ -672,7 +670,7 @@ class pPiL extends page{
 		$host = "sql2.njit.edu";
 		$dbname = "jao4";
 		try{
-		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","TopSecret");
+		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","AoL8m6GR");
 		$DBH->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		
 		$L2010 = $DBH->query("select colleges.id, colleges.name, finances.liability from colleges 
@@ -764,7 +762,7 @@ class pPiE extends page{
 		$host = "sql2.njit.edu";
 		$dbname = "jao4";
 		try{
-		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","TopSecret");
+		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","AoL8m6GR");
 		$DBH->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		
 		$L2010 = $DBH->query("select colleges.id, colleges.name, students2.enrollment from colleges 
