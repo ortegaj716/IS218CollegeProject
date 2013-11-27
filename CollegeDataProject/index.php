@@ -104,7 +104,7 @@ class pEnrollment extends page{
 		$host = "sql2.njit.edu";
 		$dbname = "jao4";
 		try{
-		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","AoL8m6GR");
+		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","TopSecret");
 		$DBH->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		
 		$STH = $DBH->query("select colleges.name, students2.enrollment from colleges inner join students2 on colleges.id = students2.id
@@ -148,7 +148,7 @@ class pLiabilities extends page{
 		$host = "sql2.njit.edu";
 		$dbname = "jao4";
 		try{
-		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","AoL8m6GR");
+		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","TopSecret");
 		$DBH->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		
 		$STH = $DBH->query("select colleges.name, finances.liability, finances.year from colleges inner join finances on colleges.id = finances.id
@@ -191,7 +191,7 @@ class pAssets extends page{
 		$host = "sql2.njit.edu";
 		$dbname = "jao4";
 		try{
-		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","AoL8m6GR");
+		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","TopSecret");
 		$DBH->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		
 		$STH = $DBH->query("select colleges.name, finances.assets, finances.year from colleges
@@ -234,7 +234,7 @@ class pRevenue extends page{
 		$host = "sql2.njit.edu";
 		$dbname = "jao4";
 		try{
-		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","AoL8m6GR");
+		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","TopSecret");
 		$DBH->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		
 		$STH = $DBH->query("select colleges.name, finances.revenue from colleges 
@@ -277,7 +277,7 @@ class pRPS extends page{
 		$host = "sql2.njit.edu";
 		$dbname = "jao4";
 		try{
-		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","AoL8m6GR");
+		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","TopSecret");
 		$DBH->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		
 		$STH = $DBH->query("select colleges.name, finances.revenue, students2.enrollment, (finances.revenue / students2.enrollment) as rps
@@ -324,7 +324,7 @@ class pAPS extends page{
 		$host = "sql2.njit.edu";
 		$dbname = "jao4";
 		try{
-		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","AoL8m6GR");
+		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","TopSecret");
 		$DBH->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		
 		$STH = $DBH->query("select colleges.name, finances.assets, students2.enrollment, (finances.assets / students2.enrollment) as aps
@@ -372,7 +372,7 @@ class pLPS extends page{
 		$dbname = "jao4";
 		$table = "colleges";
 		try{
-		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","AoL8m6GR");
+		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","TopSecret");
 		$DBH->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		
 		$STH = $DBH->query("select colleges.name, finances.liability, students2.enrollment, (finances.liability / students2.enrollment) as lps
@@ -413,167 +413,41 @@ class pLPS extends page{
 
 class p5 extends page{
 	
-	//I need to be able to sort the columns. The best way I can do that at the moment WITHOUT javascript
-	//would be to organize the array using the custom functions defined way below.
-	//This page is going to be organized a bit differently than the others.
 
 	function get(){
 	
-		$data = $this->getData(); //Gets data...
-
-		//Sorts data...
-		if(isset($_REQUEST['csort'])){
-			$s = $_REQUEST['csort'];
-			usort($data,$s);
-		}
-		
-		$this->presentData($data); // Prints data.
-		
-		$this->content .= "<br><br><a href = 'index.php'>Back to Directory</a>";
-		
-	}
-
-	//This function is for getting the data I need from the database. It then returns the data as associative array
-	function getData(){
-		
-		/*THE GAME PLAN
-		 * I need to find the college that is best in each field (Revenue, enrollments, liability, etc).
-		 * Before this question, there are 7 questions. I need to get 7 colleges.
-		 * Make 7 queries, but only query for the best college in that category. SAVE THESE COLLEGES IN AN ARRAY.
-		 * Make 7 more queries. These will be queries for ALL of the criteria for each school. THESE NEED TO BE SAVED IN AN ARRAY TOO. (2d array?)
-		 * Put the data in a table.
-		 */
-		
 		$host = "sql2.njit.edu";
 		$dbname = "jao4";
 		try{
-		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","AoL8m6GR");
+		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","TopSecret");
 		$DBH->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		
-		$topColleges = null; //The top colleges array.
-		$data = array(array()); //2Dimensional array. [COLLEGE][CRITERIA]
-		
-		//Enrollments first
-		$STH = $DBH->query("select colleges.id from colleges 
-		inner join students2 on colleges.id = students2.id inner join finances on colleges.id = finances.id 
-		where (finances.year = 2011 and students2.year = 2011)
-		 order by enrollment desc limit 1");
-		
-		while($rows = $STH->fetch()){
-			$topColleges[] = $rows['id'];
-		}
-		
-		//Now liabilities
-		$STH = $DBH->query("select colleges.id from colleges
-		inner join students2 on colleges.id = students2.id inner join finances on colleges.id = finances.id 
-		where (finances.year = 2011 and students2.year = 2011) 
-		order by liability desc limit 1");
-		
-		while($rows = $STH->fetch()){
-			$topColleges[] = $rows['id'];
-		}
-		/*
-		 * ACCORDING TO THE QUERIES I'VE MADE, ONE COLLEGE HAS TOP REVENUE, TOP ASSETS, AND TOP LIABILITY.
-		 * THIS IS COMMENTED OUT TO PREVENT THAT COLLEGE FROM APPEARING AGAIN.
-		//Then assets
-		$STH = $DBH->query("select colleges.id from colleges
-		inner join students2 on colleges.id = students2.id inner join finances on colleges.id = finances.id 
-		where (finances.year = 2011 and students2.year = 2011)
-		order by finances.assets desc limit 1");
-		
-		while($rows = $STH->fetch()){
-			$topColleges[] = $rows['id'];
-		}
-		
-		/*
-		 * ACCORDING TO THE QUERIES I'VE MADE, ONE COLLEGE HAS TOP REVENUE, TOP ASSETS, AND TOP LIABILITY.
-		 * THIS IS COMMENTED OUT TO PREVENT THAT COLLEGE FROM APPEARING AGAIN.
+		/* GAME PLAN 
+		 * 
+		 * 1.Check if a variable is set (variable is for what to search up)
+		 * 2.If doesn't exist, set variable to enrollment
+		 * 3.If exists, grab variable.
+		 * 4.Variable is used for ORDER BY $VAR DESC
+		 * 5.Make sure you can click columns to reload page and and set variable
+		 * 6.Should be ok, right?
+		 */
 		 
-		//Next is revenue
-		$STH = $DBH->query("select colleges.id from colleges
-		inner join students2 on colleges.id = students2.id inner join finances on colleges.id = finances.id 
-		where (finances.year = 2011 and students2.year = 2011)
-		order by finances.revenue desc limit 1");
-		
-		while($rows = $STH->fetch()){
-			$topColleges[] = $rows['id'];
+		 $sort = "enrollment";
+		 
+		 if(isset($_REQUEST['sort'])){
+			$sort = $_REQUEST['sort'];
 		}
-		*/
-		
-		//Revenue per student
-		$STH = $DBH->query("select colleges.id
-		from colleges inner join finances on colleges.id = finances.id inner join students2 on colleges.id = students2.id
-		where (finances.year = 2011 and students2.year = 2011)
-		order by (finances.revenue / students2.enrollment) desc limit 1");
-		
-		while($rows = $STH->fetch()){
-			$topColleges[] = $rows['id'];
-		}
-		
-		//Now assets per student
-		$STH = $DBH->query("select colleges.id
-		from colleges inner join finances on colleges.id = finances.id inner join students2 on colleges.id = students2.id
-		where (finances.year = 2011 and students2.year = 2011)
-		order by (finances.assets / students2.enrollment) desc limit 1");
-		
-		while($rows = $STH->fetch()){
-			$topColleges[] = $rows['id'];
-		}
-		
-		//Finally, liabilities per student
-
-		$STH = $DBH->query("select colleges.id
-		from colleges inner join finances on colleges.id = finances.id inner join students2 on colleges.id = students2.id
-		where liability > 0 and (finances.year = 2011 and students2.year = 2011)
-		order by (finances.liability / students2.enrollment) desc limit 1");
-		
-		while($rows = $STH->fetch()){
-			$topColleges[] = $rows['id'];
-		}
-		
-		
-		//I should create giant queries for each of the colleges now.
-		//A for loop sounds like it can do the job.
-		
-		for($i = 0; $i < 5; $i++){	
-			
-			$c = $topColleges[$i];
-
-			$STH = $DBH->query("select colleges.name, students2.enrollment, finances.liability,
+		 
+		$STH = $DBH->query("select colleges.name, students2.enrollment, finances.liability,
 			finances.assets, finances.revenue, (finances.revenue / students2.enrollment) as rps,
 			(finances.assets / students2.enrollment) as aps, (finances.liability / students2.enrollment) as lps 
 			
 			from colleges inner join students2 on colleges.id = students2.id 
 			inner join finances on colleges.id = finances.id 
 			
-			where colleges.id = $c and (students2.year = 2011 and finances.year = 2011) limit 1");
-			
-			while($rows = $STH->fetch()){
-				$data[$i] = array(
-				'name' => $rows['name'],
-				'enrollment' => $rows['enrollment'],
-				'liability' => $rows['liability'],
-				'assets' => $rows['assets'],
-				'revenue' => $rows['revenue'],
-				'rps' => $rows['rps'],
-				'aps' => $rows['aps'],
-				'lps' => $rows['lps']
-				);
-				
-			}
-		}
-	
-	$DBH = null;
-	
-	return $data;
-	
-	} catch(PDOException $e){
-			echo $e->getMessage();
-	}
-	
-}	
+			where (students2.year = 2011 and finances.year = 2011)
+			order by $sort desc limit 5");
 
-	function presentData($data){
 		//Puts the data in a table.
 		$this->content .= "<h1>Top Colleges</h1><h3>Ranked by previous criteria</h3><br>";
 		
@@ -581,30 +455,38 @@ class p5 extends page{
 		$this->content .= '
 			<tr>
 				<th>Name</th>
-				<th><a href = "index.php?page=p5&csort=csenrollment">Enrollment</a></th>
-				<th><a href = "index.php?page=p5&csort=csliability">Liability</a></th>
-				<th><a href = "index.php?page=p5&csort=csassets">Assets</a></th>
-				<th><a href = "index.php?page=p5&csort=csrevenue">Revenue</a></th>
-				<th><a href = "index.php?page=p5&csort=csrps">Revenue per Student</a></th>
-				<th><a href = "index.php?page=p5&csort=csaps">Assets per Student</a></th>
-				<th><a href = "index.php?page=p5&csort=cslps">Liability per Student</a></th>
+				<th><a href = "index.php?page=p5&sort=enrollment">Enrollment</a></th>
+				<th><a href = "index.php?page=p5&sort=liability">Liability</a></th>
+				<th><a href = "index.php?page=p5&sort=assets">Assets</a></th>
+				<th><a href = "index.php?page=p5&sort=revenue">Revenue</a></th>
+				<th><a href = "index.php?page=p5&sort=rps">Revenue per Student</a></th>
+				<th><a href = "index.php?page=p5&sort=aps">Assets per Student</a></th>
+				<th><a href = "index.php?page=p5&sort=lps">Liability per Student</a></th>
 			</tr>
 		';
-		
-		for($i = 0; $i < 5; $i++){
+
+		while($rows = $STH->fetch()){
 			$this->content .= "<tr>";
-			$this->content .= "<td>" . $data[$i]['name'] . "</td>";
-			$this->content .= "<td>" . $data[$i]['enrollment'] . "</td>";
-			$this->content .= "<td>" . $data[$i]['liability'] . "</td>";
-			$this->content .= "<td>" . $data[$i]['assets'] . "</td>";
-			$this->content .= "<td>" . $data[$i]['revenue'] . "</td>";
-			$this->content .= "<td>" . $data[$i]['rps'] . "</td>";
-			$this->content .= "<td>" . $data[$i]['aps'] . "</td>";
-			$this->content .= "<td>" . $data[$i]['lps'] . "</td>";
+				$this->content .= "<td>" . $rows['name'] . "</td>";
+				$this->content .= "<td>" . $rows['enrollment'] . "</td>";
+				$this->content .= "<td>" . $rows['liability'] . "</td>";
+				$this->content .= "<td>" . $rows['assets'] . "</td>";
+				$this->content .= "<td>" . $rows['revenue'] . "</td>";
+				$this->content .= "<td>" . $rows['rps'] . "</td>";
+				$this->content .= "<td>" . $rows['aps'] . "</td>";
+				$this->content .= "<td>" . $rows['lps'] . "</td>";
 			$this->content .= "</tr>";
 		}
 		
 		$this->content .= "</table>";
+
+		$DBH = null;
+		
+		}catch(PDOException $e){
+			echo $e->getMessage();
+		}
+		
+		$this->content .= "<br><br><a href = 'index.php'>Back to Directory</a>";
 		
 	}
 
@@ -630,7 +512,7 @@ class pState extends page{
 		$dbname = "jao4";
 		$state = $_POST['state'];
 		try{
-		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","AoL8m6GR");
+		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","TopSecret");
 		$DBH->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		
 		$STH = $DBH->query("select colleges.name, colleges.state from colleges where colleges.state = '$state'");
@@ -647,8 +529,8 @@ class pState extends page{
 		
 		while($rows = $STH->fetch()){
 			$this->content .= "<tr>";
-			$this->content .= "<td>" . $rows['name'] . "</td>";
-			$this->content .= "<td>" . $rows['state'] . "</td>";
+				$this->content .= "<td>" . $rows['name'] . "</td>";
+				$this->content .= "<td>" . $rows['state'] . "</td>";
 			$this->content .= "</tr>";
 		}
 		
@@ -670,7 +552,7 @@ class pPiL extends page{
 		$host = "sql2.njit.edu";
 		$dbname = "jao4";
 		try{
-		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","AoL8m6GR");
+		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","TopSecret");
 		$DBH->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		
 		$L2010 = $DBH->query("select colleges.id, colleges.name, finances.liability from colleges 
@@ -762,7 +644,7 @@ class pPiE extends page{
 		$host = "sql2.njit.edu";
 		$dbname = "jao4";
 		try{
-		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","AoL8m6GR");
+		$DBH = new PDO("mysql:host=$host;dbname=$dbname","jao4","TopSecret");
 		$DBH->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		
 		$L2010 = $DBH->query("select colleges.id, colleges.name, students2.enrollment from colleges 
@@ -845,8 +727,7 @@ class pPiE extends page{
 	}
 }
 
-//Custom sorting functions. I really don't like having multiples of them but
-//this will have to do for now.
+//Custom sorting function.
 
 function cmp(array $a, array $b){
 	if($a['change'] < $b['change']){
@@ -858,76 +739,6 @@ function cmp(array $a, array $b){
 	}
 }
 
-function csenrollment(array $a, array $b){
-	if($a['enrollment'] < $b['enrollment']){
-		return 1;
-	} else if($a['enrollment'] > $b['enrollment']){
-		return -1;
-	} else {
-		return 0;
-	}
-}
-
-function csliability(array $a, array $b){
-	if($a['liability'] < $b['liability']){
-		return 1;
-	} else if($a['liability'] > $b['liability']){
-		return -1;
-	} else {
-		return 0;
-	}
-}
-
-function csassets(array $a, array $b){
-	if($a['assets'] < $b['assets']){
-		return 1;
-	} else if($a['assets'] > $b['assets']){
-		return -1;
-	} else {
-		return 0;
-	}
-}
-
-function csrevenue(array $a, array $b){
-	if($a['revenue'] < $b['revenue']){
-		return 1;
-	} else if($a['revenue'] > $b['revenue']){
-		return -1;
-	} else {
-		return 0;
-	}
-}
-
-function csrps(array $a, array $b){
-	if($a['rps'] < $b['rps']){
-		return 1;
-	} else if($a['rps'] > $b['rps']){
-		return -1;
-	} else {
-		return 0;
-	}
-}
-
-function csaps(array $a, array $b){
-	if($a['aps'] < $b['aps']){
-		return 1;
-	} else if($a['aps'] > $b['aps']){
-		return -1;
-	} else {
-		return 0;
-	}
-}
-
-function cslps(array $a, array $b){
-	if($a['lps'] < $b['lps']){
-		return 1;
-	} else if($a['lps'] > $b['lps']){
-		return -1;
-	} else {
-		return 0;
-	}
-}
-
-//Having this many comparison functions is kind of disgusting, isn't it?
+//No longer need the extra custom sorting functions because mysql is sorting the database table for me.
 
 ?>
