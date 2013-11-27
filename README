@@ -6,7 +6,3 @@ didn't have any financial records.  This made the "Top Colleges" portion of the 
 because I didn't have all the information needed for some of the colleges.  Therefore, for
 EVERY question in this assignment, only schools with COMPLETE records are shown (in other words,
 they must have an id present in the college database, enrollment database, and financial database).
-
-Also, some of the colleges appeared multiple times on the "Top Colleges" portion because they were
-ranked the highest in multiple categories. To prevent the colleges from showing multiple times
-they were removed.
